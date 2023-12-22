@@ -8,10 +8,11 @@ import { SharedService } from 'src/shared/shared.service';
 @Injectable()
 export class UsersService {
   private users: User[] = [];
+  private idCounter = 0;
 constructor(private sharedService: SharedService) {}
   create(createUserDto: CreateUserDto): RespondeDto {
     const user: User = {
-      id: this.sharedService.getHashData(Math.random.toString()),
+      id: this.sharedService.getHashData(this.idCounter.toString()),
       ...createUserDto
     }
     this.users.push(user);
@@ -20,6 +21,8 @@ constructor(private sharedService: SharedService) {}
       status_code: HttpStatus.CREATED,
       content: user
     }
+    this.idCounter += 1;
+    console.log(this.idCounter)
     return res;
   }
 
